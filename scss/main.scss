@@ -1,0 +1,738 @@
+$teal: #008080;
+$eton : #86CB92;
+$dark-blue: #251F47;
+$light-blue : #8447FF;
+
+.App {
+    min-height: 100vh;
+    width: 100vw;
+    padding: 10px 10px;
+    background-color: teal;
+    .changedevice{
+        position: fixed;
+        z-index: 9999;
+        height: 100vh;
+        top:0;
+        left:0;
+        width:100vw;
+        background-color:#000;
+        color:#eee;
+        text-align: center;
+        font-size:30px;
+        display: none;
+    }
+    .actions{
+        display: flex;
+        justify-content: space-around;
+    }
+    button{
+        font-family: 'ZCOOL KuaiLe', cursive;
+        display: block;
+        padding: 10px 30px;
+        margin: 10px auto;
+        border-radius: 10px;
+        font-size: 20px;
+        color: #eee;
+        background-color: $light-blue;
+        border: 2px solid #eee;
+        &:hover{
+            cursor: pointer;
+            background-color: rgb($light-blue,0.8);
+            box-shadow: 2px 2px 5px $dark-blue;
+        }
+        &:focus{
+            outline: none;
+        }
+    }
+
+    .error, .message{
+        display: block;
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        transform: translate(-50%, -50%);
+        color: tomato;
+        text-shadow: 2px 2px 5px #555;
+        font-size: 80px;
+        font-family: 'Ma Shan Zheng', cursive;
+        text-align: center;
+    }
+    .message{
+        color: $eton;
+    }
+
+
+
+    .connection{
+        font-size:20px;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 5px 50px;
+        .light{
+            background-color: red;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            margin: 10px 10px 3px 5px;
+            &.on{
+                background-color: green;
+            }
+        }
+    }
+    .modaloverlay{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(158, 137, 137, 0.8);
+        z-index: 999;
+        .modal{
+            background-color: #eee;
+            border-radius:10px;
+            position: fixed;
+            top: 50vh;
+            left: 50vw;
+            transform: translate(-50%, -50%);
+            margin: auto;
+            padding: 20px 40px;
+            box-shadow: 3px 3px 5px #555;
+            z-index: 1000;
+            h3{
+                margin: 20px 0;
+            }
+        }
+    }
+    .lobby{
+        width: 800px;
+        margin: 50px auto;
+        .roomlist{
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            min-height: 50vh;
+            .roomcard{
+                border: 2px solid #eee;
+                border-radius: 5px;
+                width: 100%;
+                height: 80px;
+                font-size: 150%;
+                padding: 20px 20px;
+                margin: 5px 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                &:hover{
+                    cursor: pointer;
+                    border: 2px solid rgb(146, 177, 235);
+                }
+                .roominfo{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: center;
+                    h5{
+                        color:#eee;
+                        font-weight: normal;
+                    }
+                    small{
+                        color: $eton;
+                    }
+                }
+                .roomactions{
+                    display: flex;
+                    align-items: center;
+                    button{
+                        flex-grow: 0;
+                        margin:0;
+                        margin-left:20px;
+                        height: 50px;
+                    }
+                }
+            }
+        }
+        .createroom{
+            margin: 20px auto;
+        }
+    }
+
+    .players{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        justify-items: end;
+        max-width: 1700px;
+        margin: 0 auto;
+        .player{
+            flex-basis: 50%;
+            // flex-grow: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            &.player0{
+                order: 5;
+                flex-direction: row-reverse;
+                .playercard .playerpoints{
+                    right:0;
+                    left:unset;
+                }
+            }
+            &.player1{
+                order: 3;
+                flex-direction: row-reverse;
+                .playercard .playerpoints{
+                    right:0;
+                    left:unset;
+                }
+            }
+            &.player2{
+                order: 1;
+                width: 100%;
+                flex-basis: 100%;
+                padding-left: 300px;
+            }
+            &.player3{
+                order: 2;
+            }
+            &.player4{
+                order: 4;
+            }
+            .playercard{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 160px;
+                position: relative;
+                .playericon{
+                    height: 100px;
+                    width: 100px;
+                    border-radius: 50%;
+                    border: 3px solid white;
+                    overflow: hidden;
+                    &.turn{
+                        border: 4px solid gold;
+                    }
+                    
+                }
+                .playerpoints{
+                    opacity: 0.2;
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    z-index: 100;
+                    background-color:$dark-blue;
+                    border-radius: 5px;
+                    transition: all .3s;
+                    width: 0;
+                    height: 0;
+                    overflow: hidden;
+                    &:hover{
+                        padding: 10px 20px;
+                        padding-right: 40px;
+                        opacity: 1;
+                        width: auto;
+                        height: auto;
+                        display: flex;
+                    }
+                }
+                &:hover .playerpoints{
+                    padding: 10px 20px;
+                    padding-right: 40px;
+                    opacity: 1;
+                    width: auto;
+                    height: auto;
+                    display: flex;
+                }
+            }
+            .playerstatus{
+                min-width: 50px;
+                .playerdealer , .playeronboard{
+                    margin:0 auto;
+                    width: 40px;
+                    line-height: 1.2;
+                    text-align: center;
+                    background-color: $eton;
+                    color: white;
+                    border-radius: 50%;
+                }
+                .playerscore{
+                    margin:10px auto;
+                    width: 30px;
+                    line-height: 1.2;
+                    text-align: center;
+                    background-color: green;
+                    color: white;
+                    border-radius: 3px;
+                    &.disconnected{
+                        background-color: rgb(255, 107, 107);
+
+                    }
+                }
+            }
+            .cardlist{
+                margin: 0 20px;
+                display:flex;
+                flex-direction: row;
+            }
+        }
+        
+        
+    }
+    .infopanel{
+        position: absolute;
+        top:20px;
+        left: 20px;
+        height: 180px;
+        width: 250px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: 2px solid white;
+        background-color: #eee;
+        box-shadow: 2px 2px 5px #555;
+        .roominfo{
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 20px;
+            small{
+                margin-left: 20px;
+                color: $light-blue;
+                font-size:15px;
+                &.on{
+                    color: green;
+                }
+                &.off{
+                    color: red;
+                }
+            }
+        }
+        
+        .ticketdisplay{
+            display: flex;
+            .ticket{
+                margin-left: 10px;
+    
+                display: flex;
+                h3{
+                    margin:5px 10px;
+                    font-size: 15px;
+                    color: $light-blue;
+                }
+            }
+        }
+    }
+    .icons{
+        position: absolute;
+        top:18px;
+        right: 20px;
+        display: flex;
+        .history, .setting{
+            display: block;
+            margin:0 5px;
+            color: #999;
+            font-size: 120%;
+            transition: all .2s;
+            &:hover{
+                color: $eton;
+                transform: scale(1.1);
+                cursor: pointer;
+            }
+        }
+    }
+    .start{
+        position: fixed;
+        top:50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        z-index: 999;
+    }
+    .controlpanel{
+        height: auto;
+        max-height: 100vh;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        transition: all .2s;
+        overflow-Y:scroll;
+        &.hide{
+            bottom: -200px;
+            top: calc(100vh - 170px)
+        }
+        .lever{
+            padding: 6px 20px;
+            font-size:18px;
+            border-radius: 10px;
+            width:100px;
+            background-color:#bbb;
+            color: $light-blue;
+            cursor: pointer;
+        }
+        .panel{
+            display:flex;
+            width: 100vw;
+            flex-direction: column;
+            align-items: stretch;
+            border-top: 1px solid #eee;
+            background-color: rgba($teal, 0.9);
+            border-radius: 10px;
+            padding-top: 20px;
+            .upperpanel{
+                display:flex;
+                justify-content: space-between;
+                .player{
+                    flex-shrink: 0;
+                    margin-left: 50px;
+                    display: flex;
+                    align-items: flex-start;
+                    position: relative;
+                    .playericon{
+                        height: 100px;
+                        width: 100px;
+                        border-radius: 50%;
+                        border: 3px solid white;
+                        overflow: hidden;
+                        &.turn{
+                            border: 4px solid gold;
+                        }
+                        
+                    }
+                    .playerpoints{
+                        opacity: 0.2;
+                        position: absolute;
+                        top:0;
+                        left:100px;
+                        z-index: 100;
+                        background-color:$dark-blue;
+                        border-radius: 5px;
+                        transition: all .3s;
+                        width: 0;
+                        height: 0;
+                        overflow: hidden;
+                        &:hover{
+                            padding: 10px 20px;
+                            padding-right: 40px;
+                            opacity: 1;
+                            width: auto;
+                            height: auto;
+                            display: flex;
+                        }
+                    }
+                    &:hover .playerpoints{
+                        padding: 10px 20px;
+                        padding-right: 40px;
+                        opacity: 1;
+                        width: auto;
+                        height: auto;
+                        display: flex;
+                    }
+                    .playername{
+                        font-size:25px;
+                    }
+                    .playerstatus{
+                        min-width: 50px;
+                        .playerdealer, .playeronboard{
+                            margin:0 auto;
+                            width: 40px;
+                            line-height: 1.2;
+                            text-align: center;
+                            background-color: $eton;
+                            color: white;
+                            border-radius: 50%;
+                        }
+                        .playerscore{
+                            margin:10px auto;
+                            width: 30px;
+                            line-height: 1.2;
+                            text-align: center;
+                            background-color: green;
+                            color: white;
+                            border-radius: 3px;
+                            &.disconnected{
+                                background-color: rgb(255, 107, 107);
+        
+                            }
+                        }
+                    }
+                    .cardlist{
+                        display:flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
+                }
+                .actionpanel{
+                    width: 100%;
+                    margin: 0 auto;
+                    display:flex;
+                    flex-direction: row-reverse;
+                    .play ,.room, .call{
+                        display:flex;
+                        flex-direction: row;
+                        align-items: center;
+                        margin-right: 20px;
+                        button{
+                            margin: 10px;
+                        }
+                    }
+                    .room{
+                        display: flex;
+                        flex-direction: column-reverse;
+                        align-items: center;
+                        button{
+                            padding: 5px 10px;
+                            font-size:18px;
+                            &:first-child{
+                                background-color: red;
+                            }
+                        }
+                    }
+                    .call {
+                        .ticketcall{
+                            display: flex;
+                            align-items: center;
+                            .ticketcontainer{
+                                display: flex;
+                                flex-direction: column;
+                                select{
+                                    font-size: 20px;
+                                    border-radius: 4px;
+                                    padding:2px 2px;
+                                }
+                                button{
+                                    border-radius: 5px;
+                                    display: flex;
+                                    padding: 5px 20px;
+                                    transition: all .2s;
+                                    &:hover{
+                                        transform: scale(1.1,1.1);
+                                    }
+                                } 
+                            }
+                        }
+                        button.maincall{
+                            border-radius: 5px;
+                            border:none;
+                            background-color:rgba(255, 255, 255, 0);
+                            display: flex;
+                            margin-left:25px;
+                            padding: 0;
+                            transition: all .2s;
+                            &:hover{
+                                transform: scale(1.1,1.1);
+                            }
+                        }
+                    }
+                }
+            }
+            .handcard{
+                width: 95%;
+                margin: auto;
+                margin-bottom:80px;
+                min-height:100px;
+                .cardlist{
+                    margin-top: 20px;
+                    display: flex;
+                    flex-wrap: wrap;
+                }
+            }
+        }
+        
+    }
+
+    .lastplays{
+        
+        display: flex;
+        flex-wrap: wrap;
+        width: 800px;
+        .player{
+            flex-basis: 400px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 10px;
+            &.winner{
+                border: 3px solid gold;
+                border-radius: 5px;
+            }
+            .playercard{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 140px;
+                position: relative;
+                .playericon{
+                    height: 100px;
+                    width: 100px;
+                    border-radius: 50%;
+                    border: 3px solid white;
+                    overflow: hidden;
+                    &.turn{
+                        border: 4px solid gold;
+                    }
+                }
+            }
+            .cardlist{
+                margin: 0 20px;
+                display:flex;
+                flex-direction: row;
+            }
+        }
+    }
+    .info-panel{
+        width: 250px;
+        display: none;
+        height: 400px;
+        overflow: scroll;
+        position: fixed;
+        top: 40px;
+        right: 120px;
+        background-color: #eee;
+        z-index: 1010;
+        opacity: 0.7;
+        p, pre{
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+    }
+
+
+
+}
+
+
+
+.pokercontainer{
+    width: 40px;
+    height: 100px;
+    overflow: visible;
+    .pokercard{
+        width: 100px;
+        height: 180px;
+        border: 2px solid #343434;
+        border-radius: 5px;
+        padding: 4px;
+        background-color: #fff;
+        transition: all .3s;
+        .pokersuit{
+            width: 25px;
+            height: 25px;
+            img{
+                width: 100%;
+            }
+        }
+        .pokernumber{
+            width: 25px;
+            text-align: center;
+            font-size: 25px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .pokerjoker{
+            width:20px;
+            font-size: 20px;
+            word-wrap: break-word;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+        } 
+        .pokermain{
+            color: gold;
+            width: 25px;
+            height: 25px;
+
+        }
+        &:hover{
+            background-color: #eee;
+            cursor: pointer;
+        }
+        &.picked{
+            transform: translateY(-30px);
+            &:hover{
+                background-color: #eee;
+            
+            }
+        }
+        
+    }
+    &.forbidden .pokercard{
+        background-color: rgb(255, 203, 203);
+    }
+    &.main .pokercard{
+        border: 2px solid rgb(0, 60, 255);
+    }
+    &.small{
+        width: 30px;
+        height: 80px;
+        .pokercard{
+            width: 50px;
+            height: 80px;
+            .pokernumber{
+                font-size: 18px;
+                width: 18px;
+            }
+            .pokersuit{
+                width: 18px;
+                height: 18px;
+                margin-bottom:5px;
+            }
+            .pokerjoker{
+                font-size: 16px;
+                width:18px;
+                line-height: .9;
+            } 
+        }
+    }
+   
+}
+
+.cardlist{
+    margin: 0 5px;
+    margin-right: 15px;
+    display:flex;
+    flex-direction: row;
+}
+
+
+.nameform{
+    .avatarpicker{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin:40px;
+        .icon{
+            border: 3px solid rgb(37, 218, 178);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .left, .right{
+            font-size: 40px;
+            padding: 0 10px;
+            color: $light-blue;
+            &:hover{
+                cursor: pointer;
+                color: $dark-blue
+            }
+        }
+    }
+}
+
+.avatarcontainer{
+    box-sizing: content-box;
+    height:100px;
+    width: 100px;
+    position: relative;
+    overflow: hidden;
+    img.avatar{
+        height:100%;
+        position: absolute;
+        // width: 100px;
+        top:0;
+        display: block;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .App .changedevice {
+      display: block;
+    }
+  }
