@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0f9eb3166c2024260a5bb068856ce00f",
+    "revision": "3c122e33ff7c287cbc5a8fdacf1335d8",
     "url": "/zhaopengyouapp/index.html"
   },
   {
-    "revision": "6aadf9e4443c4962f6cc",
-    "url": "/zhaopengyouapp/static/css/main.2ee658e0.chunk.css"
+    "revision": "3a7d89775a6925a1c214",
+    "url": "/zhaopengyouapp/static/css/main.2545717b.chunk.css"
   },
   {
     "revision": "38a6ba6bab2e1937fe1c",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/zhaopengyouapp/static/js/2.b8a50133.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "6aadf9e4443c4962f6cc",
-    "url": "/zhaopengyouapp/static/js/main.4d182438.chunk.js"
+    "revision": "3a7d89775a6925a1c214",
+    "url": "/zhaopengyouapp/static/js/main.2b6417e9.chunk.js"
   },
   {
     "revision": "4b233274d5ff6f832e8d",
