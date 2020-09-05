@@ -129,6 +129,12 @@
   align-items: flex-start;
   justify-content: center;
 }
+.App .lobby .roomlist .roomcard .roominfo p {
+  white-space: nowrap;
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .App .lobby .roomlist .roomcard .roominfo h5 {
   color: #eee;
   font-weight: normal;
@@ -199,6 +205,7 @@
   position: relative;
 }
 .App .players .player .playercard .playericon {
+  box-sizing: content-box;
   height: 100px;
   width: 100px;
   border-radius: 50%;
@@ -377,6 +384,7 @@
 .App .controlpanel .panel .upperpanel .player .playericon {
   height: 100px;
   width: 100px;
+  box-sizing: content-box;
   border-radius: 50%;
   border: 3px solid white;
   overflow: hidden;
@@ -460,6 +468,13 @@
 .App .controlpanel .panel .upperpanel .actionpanel .play button, .App .controlpanel .panel .upperpanel .actionpanel .room button, .App .controlpanel .panel .upperpanel .actionpanel .call button {
   margin: 10px;
 }
+.App .controlpanel .panel .upperpanel .actionpanel .play button[disabled] {
+  background-color: #555;
+}
+.App .controlpanel .panel .upperpanel .actionpanel .play button[disabled]:hover {
+  box-shadow: none;
+  cursor: auto;
+}
 .App .controlpanel .panel .upperpanel .actionpanel .room {
   display: flex;
   flex-direction: column-reverse;
@@ -542,6 +557,7 @@
   position: relative;
 }
 .App .lastplays .player .playercard .playericon {
+  box-sizing: content-box;
   height: 100px;
   width: 100px;
   border-radius: 50%;

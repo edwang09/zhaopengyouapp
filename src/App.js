@@ -11,7 +11,7 @@ import Avatar from "./components/avatar"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog, faHistory, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { URL, ADHELPER, GAMESTATUS, STATUS, pokerNumberDict, TICKTES } from './constants'
- 
+let CONNECTIONTIMEOUT
 
 class App extends React.Component {
   constructor(props) {
@@ -27,6 +27,8 @@ class App extends React.Component {
       pickedDumpCard:[],
       callableMain:[],
       handCard :[],
+      validCard : false,
+      dumpableCard : false,
       ticket:TICKTES
     }
   }
@@ -47,12 +49,18 @@ class App extends React.Component {
     }
     this.ws.onmessage=function(res) {
       if (res.data.split(":")[0]==="ping") {
+        clearTimeout(CONNECTIONTIMEOUT);
         self.ws.send(`pong:${res.data.split(":")[1]}`)
+        CONNECTIONTIMEOUT = setTimeout(() => { this.setState({connection:false}) }, 5000);
       }else{
         self.handleSocketMessage(JSON.parse(res.data))
       }
     }
     this.ws.onclose=function(data) {
+      self.setState({connection:false})
+      self.showError("连接断开，请刷新")
+    }
+    this.ws.onerror=function(data) {
       self.setState({connection:false})
       self.showError("连接断开，请刷新")
     }
@@ -104,6 +112,7 @@ class App extends React.Component {
   }
   handleSocketMessage(data){
     const {action} = data
+    console.log(data)
     switch (action) {
       case "register player":
         sessionStorage.setItem('playerid', data.playerid);
@@ -144,7 +153,7 @@ class App extends React.Component {
         this.setState({currentRoom: data.room})
       break;
       case "bury": 
-        this.setState({buryingCards: true})
+        this.setState({buryingCards: true, pickedCard:[]})
         this.pushCard(data.card)
         this.setState(({handCard})=>{return {handCard: this.sortHand(handCard, true)}})
       break;
@@ -201,6 +210,10 @@ class App extends React.Component {
         sessionStorage.removeItem('displayName')
         sessionStorage.removeItem('roomid')
       break;
+      case "reset room":
+        this.setState({currentRoom: null})
+        sessionStorage.removeItem('roomid')
+      break;
       
       case "deal":
         if (data.card){
@@ -229,7 +242,7 @@ class App extends React.Component {
       if (handCard.filter(card=>card==="J0").length ===3) return [handCard.filter(card=>card==="J0")]
       return [handCard.filter(card=>card==="J0"), handCard.filter(card=>card==="J0").slice(0,3)]
     }
-    const summary = handCard.filter(card=>card.slice(0,1)==="J" || (card.slice(0,1)!=="J" && card.slice(1)===mainNumber))
+    const summary = handCard.filter(card=>card.slice(0,1)==="J" || (card.slice(0,1)!=="J" && card.slice(1)===mainNumber && card.slice(0,1)!==mainSuit))
     .reduce((obj, itm)=>{
       if (obj[itm]){
         return {
@@ -265,13 +278,25 @@ class App extends React.Component {
       ]
       normalCard = normalCard.filter(a=>a.slice(0, 1)!==this.state.currentRoom.mainSuit).sort()
     }
-    const sortedHand = [ 
-      ...mainCard,
-      ...normalCard.filter(a=>a.slice(0,1)==="H").sort().reverse(),
-      ...normalCard.filter(a=>a.slice(0,1)==="S").sort().reverse(),
-      ...normalCard.filter(a=>a.slice(0,1)==="D").sort().reverse(),
-      ...normalCard.filter(a=>a.slice(0,1)==="C").sort().reverse(),
-    ]
+    let sortedHand
+    if (this.state.currentRoom.mainSuit === "S" || this.state.currentRoom.mainSuit === "D" ){
+      sortedHand = [ 
+        ...mainCard,
+        ...normalCard.filter(a=>a.slice(0,1)==="S").sort().reverse(),
+        ...normalCard.filter(a=>a.slice(0,1)==="H").sort().reverse(),
+        ...normalCard.filter(a=>a.slice(0,1)==="C").sort().reverse(),
+        ...normalCard.filter(a=>a.slice(0,1)==="D").sort().reverse(),
+      ]
+    }else{
+      sortedHand = [ 
+        ...mainCard,
+        ...normalCard.filter(a=>a.slice(0,1)==="H").sort().reverse(),
+        ...normalCard.filter(a=>a.slice(0,1)==="S").sort().reverse(),
+        ...normalCard.filter(a=>a.slice(0,1)==="D").sort().reverse(),
+        ...normalCard.filter(a=>a.slice(0,1)==="C").sort().reverse(),
+      ]
+    }
+    
     return sortedHand
   }
   pushCard(cards){
@@ -291,15 +316,10 @@ class App extends React.Component {
     let pickedDumpCard
     if (cardIndex>-1){
       pickedDumpCard = this.state.pickedDumpCard.filter((card,id)=>id!==cardIndex)
-      this.setState({pickedDumpCard},()=>{
-        this.validateCard()
-      })
     }else{
       pickedDumpCard = [...this.state.pickedDumpCard, idx]
-      this.setState({pickedDumpCard},()=>{
-        this.validateCard()
-      })
     }
+    this.setState({pickedDumpCard})
   }
   pickCard(idx){
     const cardIndex =this.state.pickedCard.indexOf(idx)
@@ -355,16 +375,15 @@ class App extends React.Component {
       this.setState({error:null})
     },1500)
   }
-  playCard(dump){
+  playCard(){
     const handCard = this.state.handCard
     const picked = handCard.filter((card,idx)=>this.state.pickedCard.indexOf(idx)>-1)
     const lefted = handCard.filter((card,idx)=>this.state.pickedCard.indexOf(idx)===-1)
-    const isStarter = this.isStarter()
-    if(isStarter && dump){
-      this.setState({handCard:lefted, pickedCard:[]})
+    if(this.state.dumpableCard && !this.state.validCard){
+      this.setState({handCard:lefted, pickedCard:[], dumpableCard:false, validCard:false})
       this.sendSocket("play",{card:picked, lefted:lefted, roomid:this.state.currentRoom.roomid, last: lefted.length===0, dump:true})
-    }else if (this.validateCard(picked, handCard, isStarter)){
-      this.setState({handCard:lefted, pickedCard:[]})
+    }else if (this.state.validCard){
+      this.setState({handCard:lefted, pickedCard:[], dumpableCard:false, validCard:false})
       this.sendSocket("play",{card:picked, lefted:lefted, roomid:this.state.currentRoom.roomid, last: lefted.length===0})
     }else {
       this.showError("出牌违规，请重新选择。")
@@ -415,7 +434,7 @@ class App extends React.Component {
     }
     this.setState({
       validCard : validity, 
-      dumpableCard: picked.every(c=>(!this.isMain(c) && c.slice(0,1)===picked[0].slice(0,1)))
+      dumpableCard: (isStarter && picked.every(c=>(!this.isMain(c) && c.slice(0,1)===picked[0].slice(0,1))))
     })
     return validity
   }
@@ -565,7 +584,7 @@ class App extends React.Component {
     }else{
       this.sendSocket("validdump",{roomid:this.state.currentRoom.roomid})
     }
-    this.setState({modal:null, pickDumpCard:[]})
+    this.setState({modal:null, pickedDumpCard:[]})
   }
   setAvatar(adjust){
     const avatar = this.state.avatar
@@ -812,8 +831,9 @@ class App extends React.Component {
                   
                   <div className="play">
                     {(this.state.currentRoom.gamestatus==="bury" && this.state.currentRoom.dealerid === this.state.playerid) && <button onClick={(e)=>{e.preventDefault();this.buryCard()}}>埋牌</button>}
-                    {(this.state.currentRoom.gamestatus==="in play" && this.state.currentRoom.inTurn === this.state.playerid) && <button disabled = {!this.state.validCard} onClick={(e)=>{e.preventDefault();this.playCard()}}>出牌</button>}
-                    {(this.state.currentRoom.gamestatus==="in play" && this.state.currentRoom.inTurn === this.state.playerid && this.state.currentRoom.currentPlay.length%6 === 0) && <button disabled = {!this.state.dumpableCard} onClick={(e)=>{e.preventDefault();this.playCard(true)}}>甩牌</button>}
+                    {(this.state.currentRoom.gamestatus==="in play" && this.state.currentRoom.inTurn === this.state.playerid) && 
+                      <button disabled = {!this.state.validCard && !this.state.dumpableCard} onClick={(e)=>{e.preventDefault();this.playCard()}}>{(this.state.dumpableCard && !this.state.validCard) ? "甩" : "出"}牌</button>
+                    }
                   </div>
                   <div className="call">
                     {(this.state.currentRoom.dealerid === this.state.playerid && this.state.currentRoom.gamestatus==="ticketcall") && 

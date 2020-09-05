@@ -49,17 +49,18 @@ class Poker extends React.Component {
             "forbidden":this.props.forbidden,
             "point": (Number==="5" ||Number==="10" ||Number==="K")
         })} 
-            style={{ zIndex:`${this.props.sequence}`}} 
-            onClick={this.props.forbidden ? null : this.props.onPick}>
+            style={{ zIndex:`${this.props.sequence}`}} >
             {suit!=="J" &&
-                (<div className={classNames({"pokercard":true, "picked":this.props.picked})}>
+                (<div className={classNames({"pokercard":true, "picked":this.props.picked})}  
+                    onClick={(e)=>{if (!this.props.forbidden && this.props.onPick) this.props.onPick()}}>
                     <div className="pokersuit">{suitRender}</div>
                     <div className="pokernumber" style={{color:((suit==="H"||suit==="D")?"red":"black")}} >{Number}</div>
                     {this.props.main && <div className="pokermain" ><FontAwesomeIcon icon={ faStar } /></div>}
                 </div>)
             }
             {suit==="J" &&
-                (<div  className={classNames({"pokercard":true, "picked":this.props.picked})}>
+                (<div  className={classNames({"pokercard":true, "picked":this.props.picked})} 
+                    onClick={(e)=>{if (!this.props.forbidden && this.props.onPick) this.props.onPick()}}>
                     <div className="pokerjoker" style={{color:(Number==="0"?"red":"black")}}>JOKER</div>
                     {this.props.main && <div className="pokermain" ><FontAwesomeIcon icon={ faStar } /></div>}
                 </div>)

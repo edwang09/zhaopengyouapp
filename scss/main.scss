@@ -133,6 +133,12 @@ $light-blue : #8447FF;
                     flex-direction: column;
                     align-items: flex-start;
                     justify-content: center;
+                    p{
+                        white-space: nowrap; 
+                        width: 100px; 
+                        overflow: hidden;
+                        text-overflow: ellipsis; 
+                    }
                     h5{
                         color:#eee;
                         font-weight: normal;
@@ -206,6 +212,7 @@ $light-blue : #8447FF;
                 min-height: 160px;
                 position: relative;
                 .playericon{
+                    box-sizing: content-box;
                     height: 100px;
                     width: 100px;
                     border-radius: 50%;
@@ -389,6 +396,7 @@ $light-blue : #8447FF;
                     .playericon{
                         height: 100px;
                         width: 100px;
+                        box-sizing: content-box;
                         border-radius: 50%;
                         border: 3px solid white;
                         overflow: hidden;
@@ -472,6 +480,15 @@ $light-blue : #8447FF;
                         margin-right: 20px;
                         button{
                             margin: 10px;
+                        }
+                    }
+                    .play{
+                        button[disabled]{
+                            background-color: #555;
+                            &:hover{
+                                box-shadow: none;
+                                cursor: auto;
+                            }
                         }
                     }
                     .room{
@@ -562,6 +579,7 @@ $light-blue : #8447FF;
                 min-height: 140px;
                 position: relative;
                 .playericon{
+                    box-sizing: content-box;
                     height: 100px;
                     width: 100px;
                     border-radius: 50%;
