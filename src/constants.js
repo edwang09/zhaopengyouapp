@@ -1,6 +1,6 @@
     // URL:'wss://zhaopengyouserver.herokuapp.com/',
-export const URL = "ws://localhost:3000/"
-// export const URL = "wss://zhaopengyouserver.herokuapp.com/"
+// export const URL = "ws://localhost:3000/"
+export const URL = "wss://zhaopengyouserver.herokuapp.com/"
 export const ADHELPER=["x","2","3","4","5","6","7","8","9","t","t1","t2","t3","ta"]
 export const GAMESTATUS={
         "pending": "等待中",

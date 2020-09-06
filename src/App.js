@@ -58,11 +58,13 @@ class App extends React.Component {
     }
     this.ws.onclose=function(data) {
       self.setState({connection:false})
-      self.showError("连接断开，请刷新")
+      this.ws = new WebSocket(URL);
+      self.showError("连接断开，正在重连")
     }
     this.ws.onerror=function(data) {
       self.setState({connection:false})
-      self.showError("连接断开，请刷新")
+      this.ws = new WebSocket(URL);
+      self.showError("连接错误，正在重连")
     }
   }
 
@@ -419,9 +421,11 @@ class App extends React.Component {
   validateCard(picked, handCard, isStarter){
     if (!handCard) handCard = this.state.handCard
     if (!isStarter) isStarter = this.isStarter()
-    if (!picked) picked = handCard.filter((card,idx)=>this.state.pickedCard.indexOf(idx)>-1)
-    let validity
-    if (isStarter){
+    if (!picked) picked = this.state.pickedCard.map(index=>handCard[index])
+    let validity 
+    if (picked.length === 0){
+      validity = false
+    }else if (isStarter){
       validity = this.validateStartCard(picked, handCard)
     }else{
       const thisPlay = this.state.currentRoom.currentPlay[0].card
@@ -434,7 +438,7 @@ class App extends React.Component {
     }
     this.setState({
       validCard : validity, 
-      dumpableCard: (isStarter && picked.every(c=>(!this.isMain(c) && c.slice(0,1)===picked[0].slice(0,1))))
+      dumpableCard: (isStarter && picked.length > 0 && picked.every(c=>(!this.isMain(c) && c.slice(0,1)===picked[0].slice(0,1))))
     })
     return validity
   }

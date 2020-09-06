@@ -40,10 +40,17 @@
 .App button:focus {
   outline: none;
 }
+.App button button[disabled] {
+  background-color: #555;
+}
+.App button button[disabled]:hover {
+  box-shadow: none;
+  cursor: auto;
+}
 .App .error, .App .message {
   display: block;
   position: fixed;
-  top: 50vh;
+  top: 30vh;
   left: 50vw;
   transform: translate(-50%, -50%);
   color: tomato;
@@ -347,9 +354,10 @@
   transition: all 0.2s;
   overflow-Y: scroll;
 }
-.App .controlpanel.hide {
-  bottom: -200px;
-  top: calc(100vh - 170px);
+.App .controlpanel.hide .panel .handcard {
+  height: 0;
+  min-height: 0;
+  margin-bottom: 0;
 }
 .App .controlpanel .lever {
   padding: 6px 20px;
@@ -361,6 +369,7 @@
   cursor: pointer;
 }
 .App .controlpanel .panel {
+  transition: all 0.2s;
   display: flex;
   width: 100vw;
   flex-direction: column;
@@ -522,6 +531,7 @@
   transform: scale(1.1, 1.1);
 }
 .App .controlpanel .panel .handcard {
+  transition: all ease-in 0.2s;
   width: 95%;
   margin: auto;
   margin-bottom: 80px;
@@ -592,7 +602,6 @@
 .pokercontainer {
   width: 40px;
   height: 100px;
-  overflow: visible;
 }
 .pokercontainer .pokercard {
   width: 100px;
@@ -602,6 +611,7 @@
   padding: 4px;
   background-color: #fff;
   transition: all 0.3s;
+  position: relative;
 }
 .pokercontainer .pokercard .pokersuit {
   width: 25px;
@@ -633,10 +643,7 @@
   cursor: pointer;
 }
 .pokercontainer .pokercard.picked {
-  transform: translateY(-30px);
-}
-.pokercontainer .pokercard.picked:hover {
-  background-color: #eee;
+  margin-top: -30px;
 }
 .pokercontainer.forbidden .pokercard {
   background-color: #ffcbcb;
@@ -684,6 +691,7 @@
   border: 3px solid #25dab2;
   border-radius: 20px;
   overflow: hidden;
+  position: relative;
 }
 .nameform .avatarpicker .left, .nameform .avatarpicker .right {
   font-size: 40px;

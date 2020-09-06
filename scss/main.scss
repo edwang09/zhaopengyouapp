@@ -43,12 +43,19 @@ $light-blue : #8447FF;
         &:focus{
             outline: none;
         }
+        button[disabled]{
+            background-color: #555;
+            &:hover{
+                box-shadow: none;
+                cursor: auto;
+            }
+        }
     }
 
     .error, .message{
         display: block;
         position: fixed;
-        top: 50vh;
+        top: 30vh;
         left: 50vw;
         transform: translate(-50%, -50%);
         color: tomato;
@@ -363,8 +370,14 @@ $light-blue : #8447FF;
         transition: all .2s;
         overflow-Y:scroll;
         &.hide{
-            bottom: -200px;
-            top: calc(100vh - 170px)
+            // bottom: -200px;
+            // top: calc(100vh - 170px);
+            .panel .handcard{
+                height: 0;
+                min-height: 0;
+                margin-bottom: 0;
+            }
+
         }
         .lever{
             padding: 6px 20px;
@@ -376,6 +389,7 @@ $light-blue : #8447FF;
             cursor: pointer;
         }
         .panel{
+            transition: all .2s;
             display:flex;
             width: 100vw;
             flex-direction: column;
@@ -542,6 +556,7 @@ $light-blue : #8447FF;
                 }
             }
             .handcard{
+                transition: all ease-in .2s;
                 width: 95%;
                 margin: auto;
                 margin-bottom:80px;
@@ -623,7 +638,6 @@ $light-blue : #8447FF;
 .pokercontainer{
     width: 40px;
     height: 100px;
-    overflow: visible;
     .pokercard{
         width: 100px;
         height: 180px;
@@ -632,6 +646,7 @@ $light-blue : #8447FF;
         padding: 4px;
         background-color: #fff;
         transition: all .3s;
+        position: relative;
         .pokersuit{
             width: 25px;
             height: 25px;
@@ -663,11 +678,7 @@ $light-blue : #8447FF;
             cursor: pointer;
         }
         &.picked{
-            transform: translateY(-30px);
-            &:hover{
-                background-color: #eee;
-            
-            }
+            margin-top:-30px;
         }
         
     }
@@ -720,6 +731,7 @@ $light-blue : #8447FF;
             border: 3px solid rgb(37, 218, 178);
             border-radius: 20px;
             overflow: hidden;
+            position: relative;
         }
         .left, .right{
             font-size: 40px;
