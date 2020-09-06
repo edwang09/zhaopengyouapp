@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/zhaopengyouapp/static/css/main.3f88edfa.chunk.css",
+    "main.css": "/zhaopengyouapp/static/css/main.b0bdbe77.chunk.css",
     "main.js": "/zhaopengyouapp/static/js/main.a418e397.chunk.js",
     "main.js.map": "/zhaopengyouapp/static/js/main.a418e397.chunk.js.map",
     "runtime-main.js": "/zhaopengyouapp/static/js/runtime-main.dc97f4f5.js",
@@ -8,16 +8,16 @@
     "static/js/2.b8a50133.chunk.js": "/zhaopengyouapp/static/js/2.b8a50133.chunk.js",
     "static/js/2.b8a50133.chunk.js.map": "/zhaopengyouapp/static/js/2.b8a50133.chunk.js.map",
     "index.html": "/zhaopengyouapp/index.html",
-    "precache-manifest.baeb6efc6f4801e6ab1b67667e553d31.js": "/zhaopengyouapp/precache-manifest.baeb6efc6f4801e6ab1b67667e553d31.js",
+    "precache-manifest.d16d5498385210308f9f95647a80667d.js": "/zhaopengyouapp/precache-manifest.d16d5498385210308f9f95647a80667d.js",
     "service-worker.js": "/zhaopengyouapp/service-worker.js",
-    "static/css/main.3f88edfa.chunk.css.map": "/zhaopengyouapp/static/css/main.3f88edfa.chunk.css.map",
+    "static/css/main.b0bdbe77.chunk.css.map": "/zhaopengyouapp/static/css/main.b0bdbe77.chunk.css.map",
     "static/js/2.b8a50133.chunk.js.LICENSE.txt": "/zhaopengyouapp/static/js/2.b8a50133.chunk.js.LICENSE.txt",
     "static/media/avatar.png": "/zhaopengyouapp/static/media/avatar.57d143fd.png"
   },
   "entrypoints": [
     "static/js/runtime-main.dc97f4f5.js",
     "static/js/2.b8a50133.chunk.js",
-    "static/css/main.3f88edfa.chunk.css",
+    "static/css/main.b0bdbe77.chunk.css",
     "static/js/main.a418e397.chunk.js"
   ]
 }
