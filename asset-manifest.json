@@ -1,23 +1,29 @@
 {
   "files": {
-    "main.css": "/zhaopengyouapp/static/css/main.c85373ca.chunk.css",
-    "main.js": "/zhaopengyouapp/static/js/main.453c0baa.chunk.js",
-    "main.js.map": "/zhaopengyouapp/static/js/main.453c0baa.chunk.js.map",
+    "main.css": "/zhaopengyouapp/static/css/main.e9c59547.chunk.css",
+    "main.js": "/zhaopengyouapp/static/js/main.a7ef166f.chunk.js",
+    "main.js.map": "/zhaopengyouapp/static/js/main.a7ef166f.chunk.js.map",
     "runtime-main.js": "/zhaopengyouapp/static/js/runtime-main.dc97f4f5.js",
     "runtime-main.js.map": "/zhaopengyouapp/static/js/runtime-main.dc97f4f5.js.map",
-    "static/js/2.b8a50133.chunk.js": "/zhaopengyouapp/static/js/2.b8a50133.chunk.js",
-    "static/js/2.b8a50133.chunk.js.map": "/zhaopengyouapp/static/js/2.b8a50133.chunk.js.map",
+    "static/js/2.9b9a0900.chunk.js": "/zhaopengyouapp/static/js/2.9b9a0900.chunk.js",
+    "static/js/2.9b9a0900.chunk.js.map": "/zhaopengyouapp/static/js/2.9b9a0900.chunk.js.map",
     "index.html": "/zhaopengyouapp/index.html",
-    "precache-manifest.ebfcfc3a749c8230698354f9f1433acb.js": "/zhaopengyouapp/precache-manifest.ebfcfc3a749c8230698354f9f1433acb.js",
+    "precache-manifest.3eec44cb82b5eee069c0027c2953741e.js": "/zhaopengyouapp/precache-manifest.3eec44cb82b5eee069c0027c2953741e.js",
     "service-worker.js": "/zhaopengyouapp/service-worker.js",
-    "static/css/main.c85373ca.chunk.css.map": "/zhaopengyouapp/static/css/main.c85373ca.chunk.css.map",
-    "static/js/2.b8a50133.chunk.js.LICENSE.txt": "/zhaopengyouapp/static/js/2.b8a50133.chunk.js.LICENSE.txt",
-    "static/media/avatar.png": "/zhaopengyouapp/static/media/avatar.57d143fd.png"
+    "static/css/main.e9c59547.chunk.css.map": "/zhaopengyouapp/static/css/main.e9c59547.chunk.css.map",
+    "static/js/2.9b9a0900.chunk.js.LICENSE.txt": "/zhaopengyouapp/static/js/2.9b9a0900.chunk.js.LICENSE.txt",
+    "static/media/avatar.png": "/zhaopengyouapp/static/media/avatar.57d143fd.png",
+    "static/media/lose.wav": "/zhaopengyouapp/static/media/lose.73c5dafb.wav",
+    "static/media/maincall.wav": "/zhaopengyouapp/static/media/maincall.e8053b8a.wav",
+    "static/media/play.wav": "/zhaopengyouapp/static/media/play.1c33e3b6.wav",
+    "static/media/start.wav": "/zhaopengyouapp/static/media/start.d3468071.wav",
+    "static/media/turn.wav": "/zhaopengyouapp/static/media/turn.d4004b8b.wav",
+    "static/media/win.wav": "/zhaopengyouapp/static/media/win.083126b9.wav"
   },
   "entrypoints": [
     "static/js/runtime-main.dc97f4f5.js",
-    "static/js/2.b8a50133.chunk.js",
-    "static/css/main.c85373ca.chunk.css",
-    "static/js/main.453c0baa.chunk.js"
+    "static/js/2.9b9a0900.chunk.js",
+    "static/css/main.e9c59547.chunk.css",
+    "static/js/main.a7ef166f.chunk.js"
   ]
 }
