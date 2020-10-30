@@ -43,7 +43,7 @@ $light-blue : #8447FF;
         &:focus{
             outline: none;
         }
-        button[disabled]{
+        &:disabled{
             background-color: #555;
             &:hover{
                 box-shadow: none;
@@ -109,6 +109,11 @@ $light-blue : #8447FF;
             z-index: 1000;
             h3{
                 margin: 20px 0;
+            }
+            .settings{
+                button{
+                    min-width: 180px;
+                }
             }
         }
     }
@@ -359,7 +364,7 @@ $light-blue : #8447FF;
         top:50%;
         left: 50%;
         transform: translate(-50%,-50%);
-        z-index: 999;
+        z-index: 998;
     }
     .controlpanel{
         height: auto;

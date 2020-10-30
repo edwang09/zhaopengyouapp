@@ -40,10 +40,10 @@
 .App button:focus {
   outline: none;
 }
-.App button button[disabled] {
+.App button:disabled {
   background-color: #555;
 }
-.App button button[disabled]:hover {
+.App button:disabled:hover {
   box-shadow: none;
   cursor: auto;
 }
@@ -103,6 +103,9 @@
 }
 .App .modaloverlay .modal h3 {
   margin: 20px 0;
+}
+.App .modaloverlay .modal .settings button {
+  min-width: 180px;
 }
 .App .lobby {
   width: 800px;
@@ -343,7 +346,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 999;
+  z-index: 998;
 }
 .App .controlpanel {
   height: auto;

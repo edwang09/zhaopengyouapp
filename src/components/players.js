@@ -57,7 +57,7 @@ const Players = function(props) {
             {(player.onBoard && player.playerid !== props.dealerid)  && <div className="playeronboard">跟</div>}
           </div>
           <div className = "cardlist">
-            {play[0] && play[0].card.map((card)=>{return <Poker small card ={card}/>})}
+            {play[0] && play[0].card.map((card, id)=>{return <Poker key={id} small card ={card}/>})}
           </div>
         </div>)
   })

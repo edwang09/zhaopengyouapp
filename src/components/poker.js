@@ -40,6 +40,7 @@ class Poker extends React.Component {
     }else if (suit === "S"){
         suitRender = <img src={S} alt="S"/>
     } 
+    if(this.props.forbidden && this.props.picked) this.props.onPick()
     return (
         <div 
         className={classNames({
