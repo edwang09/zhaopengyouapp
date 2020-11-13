@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4105d88c190f19e94bb5278087ee51e7",
+    "revision": "401c7b96b4ef249c2c374efa15e8f1b0",
     "url": "/zhaopengyouapp/index.html"
   },
   {
-    "revision": "fddcc718416bfbda436a",
-    "url": "/zhaopengyouapp/static/css/main.e9c59547.chunk.css"
+    "revision": "a974b3ed71ed6f9cede6",
+    "url": "/zhaopengyouapp/static/css/main.b7c9e72d.chunk.css"
   },
   {
-    "revision": "4a34a19f37e9a02f26b4",
-    "url": "/zhaopengyouapp/static/js/2.9b9a0900.chunk.js"
+    "revision": "e05ba248a25a492f3931",
+    "url": "/zhaopengyouapp/static/js/2.531b4bf4.chunk.js"
   },
   {
     "revision": "5ac48c47bb3912b14c2d8de4f56d5ae8",
-    "url": "/zhaopengyouapp/static/js/2.9b9a0900.chunk.js.LICENSE.txt"
+    "url": "/zhaopengyouapp/static/js/2.531b4bf4.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "fddcc718416bfbda436a",
-    "url": "/zhaopengyouapp/static/js/main.9493cc0c.chunk.js"
+    "revision": "a974b3ed71ed6f9cede6",
+    "url": "/zhaopengyouapp/static/js/main.20477744.chunk.js"
   },
   {
     "revision": "4b233274d5ff6f832e8d",
