@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/zhaopengyouapp/static/css/main.b7c9e72d.chunk.css",
-    "main.js": "/zhaopengyouapp/static/js/main.20477744.chunk.js",
-    "main.js.map": "/zhaopengyouapp/static/js/main.20477744.chunk.js.map",
+    "main.css": "/zhaopengyouapp/static/css/main.38708187.chunk.css",
+    "main.js": "/zhaopengyouapp/static/js/main.02f5e7aa.chunk.js",
+    "main.js.map": "/zhaopengyouapp/static/js/main.02f5e7aa.chunk.js.map",
     "runtime-main.js": "/zhaopengyouapp/static/js/runtime-main.dc97f4f5.js",
     "runtime-main.js.map": "/zhaopengyouapp/static/js/runtime-main.dc97f4f5.js.map",
-    "static/js/2.531b4bf4.chunk.js": "/zhaopengyouapp/static/js/2.531b4bf4.chunk.js",
-    "static/js/2.531b4bf4.chunk.js.map": "/zhaopengyouapp/static/js/2.531b4bf4.chunk.js.map",
+    "static/js/2.9638eff4.chunk.js": "/zhaopengyouapp/static/js/2.9638eff4.chunk.js",
+    "static/js/2.9638eff4.chunk.js.map": "/zhaopengyouapp/static/js/2.9638eff4.chunk.js.map",
     "index.html": "/zhaopengyouapp/index.html",
-    "precache-manifest.bb80b11353c2d5afeed669abe899e810.js": "/zhaopengyouapp/precache-manifest.bb80b11353c2d5afeed669abe899e810.js",
+    "precache-manifest.2e242f6f72d5241752bd44d67a9a28d1.js": "/zhaopengyouapp/precache-manifest.2e242f6f72d5241752bd44d67a9a28d1.js",
     "service-worker.js": "/zhaopengyouapp/service-worker.js",
-    "static/css/main.b7c9e72d.chunk.css.map": "/zhaopengyouapp/static/css/main.b7c9e72d.chunk.css.map",
-    "static/js/2.531b4bf4.chunk.js.LICENSE.txt": "/zhaopengyouapp/static/js/2.531b4bf4.chunk.js.LICENSE.txt",
+    "static/css/main.38708187.chunk.css.map": "/zhaopengyouapp/static/css/main.38708187.chunk.css.map",
+    "static/js/2.9638eff4.chunk.js.LICENSE.txt": "/zhaopengyouapp/static/js/2.9638eff4.chunk.js.LICENSE.txt",
     "static/media/avatar.png": "/zhaopengyouapp/static/media/avatar.57d143fd.png",
     "static/media/lose.wav": "/zhaopengyouapp/static/media/lose.73c5dafb.wav",
     "static/media/maincall.wav": "/zhaopengyouapp/static/media/maincall.e8053b8a.wav",
@@ -22,8 +22,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.dc97f4f5.js",
-    "static/js/2.531b4bf4.chunk.js",
-    "static/css/main.b7c9e72d.chunk.css",
-    "static/js/main.20477744.chunk.js"
+    "static/js/2.9638eff4.chunk.js",
+    "static/css/main.38708187.chunk.css",
+    "static/js/main.02f5e7aa.chunk.js"
   ]
 }
