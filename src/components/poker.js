@@ -40,7 +40,7 @@ class Poker extends React.Component {
     }else if (suit === "S"){
         suitRender = <img src={S} alt="S"/>
     } 
-    if(this.props.forbidden && this.props.picked) this.props.onPick()
+    if(this.props.forbidden && this.props.picked){this.props.onPickStart();this.props.onPickEnd()}
     return (
         <div 
         className={classNames({
@@ -54,7 +54,9 @@ class Poker extends React.Component {
             {suit!=="J" &&
                 (<div className={classNames({"pokercard":true, "picked":this.props.picked})}  
                     style={{ zIndex:`${this.props.sequence}`}}
-                    onClick={(e)=>{if (!this.props.forbidden && this.props.onPick) this.props.onPick()}}>
+                    onMouseDown={(e)=>{if (!this.props.forbidden && this.props.onPickStart) this.props.onPickStart()}}
+                    onMouseEnter={(e)=>{if (!this.props.forbidden && this.props.onPickEnter){ this.props.onPickEnter()}else if(this.props.onPickEnd){this.props.onPickEnd()}}}
+                    onMouseUp={(e)=>{if (!this.props.forbidden && this.props.onPickEnd) this.props.onPickEnd()}}>
                     <div className="pokersuit">{suitRender}</div>
                     <div className="pokernumber" style={{color:((suit==="H"||suit==="D")?"red":"black")}} >{Number}</div>
                     {this.props.main && <div className="pokermain" ><FontAwesomeIcon icon={ faStar } /></div>}
@@ -63,7 +65,9 @@ class Poker extends React.Component {
             {suit==="J" &&
                 (<div  className={classNames({"pokercard":true, "picked":this.props.picked})} 
                     style={{ zIndex:`${this.props.sequence}`}}
-                    onClick={(e)=>{if (!this.props.forbidden && this.props.onPick) this.props.onPick()}}>
+                    onMouseDown={(e)=>{if (!this.props.forbidden && this.props.onPickStart) this.props.onPickStart()}}
+                    onMouseEnter={(e)=>{if (!this.props.forbidden && this.props.onPickEnter){ this.props.onPickEnter()}else{this.props.onPickEnd()}}}
+                    onMouseUp={(e)=>{if (!this.props.forbidden && this.props.onPickEnd) this.props.onPickEnd()}}>
                     <div className="pokerjoker" style={{color:(Number==="0"?"red":"black")}}>JOKER</div>
                     {this.props.main && <div className="pokermain" ><FontAwesomeIcon icon={ faStar } /></div>}
                 </div>)

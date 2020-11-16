@@ -44,7 +44,7 @@ const Players = function(props) {
           <div className="playercard">
 
             <div className={classNames({"playericon":true,"turn": player.playerid === props.inTurn })}>
-              <Avatar avatar={player.avatar}/>
+              {player.avatar ? <Avatar avatar={player.avatar}/> :<img src={noavatar} alt="noavatar"/>}
             </div>
             <div className="playerpoints">
                 {player.points.map((card)=>{return card.map((cd)=>{return <Poker small card ={cd}/>})})}

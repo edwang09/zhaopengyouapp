@@ -341,6 +341,29 @@
   transform: scale(1.1);
   cursor: pointer;
 }
+.App .icons .buymecoffee {
+  font-size: 140%;
+  margin: 0 5px;
+  color: #999;
+  font-size: 140%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-decoration: none;
+}
+.App .icons .buymecoffee:hover {
+  color: #86CB92;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+.App .icons .buymecoffee div.coffeetext {
+  display: block;
+  font-size: 15px;
+  width: 50px;
+  text-align: center;
+  overflow: wrap;
+}
 .App .start {
   position: fixed;
   top: 50%;
@@ -615,6 +638,12 @@
   background-color: #fff;
   transition: all 0.3s;
   position: relative;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .pokercontainer .pokercard .pokersuit {
   width: 25px;
@@ -704,6 +733,9 @@
 .nameform .avatarpicker .left:hover, .nameform .avatarpicker .right:hover {
   cursor: pointer;
   color: #251F47;
+}
+.nameform .formgroup {
+  margin-top: 10px;
 }
 
 .avatarcontainer {

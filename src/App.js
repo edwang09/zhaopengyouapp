@@ -9,7 +9,7 @@ import Players from "./components/players"
 import Lastplays from "./components/lastplays"
 import Avatar from "./components/avatar"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCog, faHistory, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faHistory, faAngleLeft, faAngleRight, faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { URL, ADHELPER, GAMESTATUS, STATUS, pokerNumberDict, TICKTES } from './constants'
 import Play from "./assets/play.wav"
 import Win from "./assets/win.wav"
@@ -35,6 +35,7 @@ class App extends React.Component {
       displayName:"",
       avatar:Math.floor(Math.random()*24),
       roomName:"",
+      roomNumber: "2",
       pickedCard:[],
       pickedDumpCard:[],
       callableMain:[],
@@ -63,7 +64,7 @@ class App extends React.Component {
       if (res.data.split(":")[0]==="ping") {
         clearTimeout(CONNECTIONTIMEOUT);
         self.ws.send(`pong:${res.data.split(":")[1]}`)
-        CONNECTIONTIMEOUT = setTimeout(() => { this.setState({connection:false}) }, 5000);
+        CONNECTIONTIMEOUT = setTimeout(() => { self.setState({connection:false}) }, 5000);
       }else{
         self.handleSocketMessage(JSON.parse(res.data))
       }
@@ -81,15 +82,15 @@ class App extends React.Component {
   }
 
   sendSocket(action, payload){
-    if (this.ws && this.state.connection){
+    try {
       this.ws.send(JSON.stringify({
         action,
         playerid: this.state.playerid,
         roomid: (this.state.currentRoom ? this.state.currentRoom.roomid : null),
         payload
       }))
-    }else{
-      console.log("error with websocket connection.")
+    } catch (error) {
+      this.showMessage("websocket 发送错误.")
     }
   }
   registerPlayer(payload){
@@ -104,7 +105,7 @@ class App extends React.Component {
     }
   }
   createRoom(){
-    const payload={roomName: this.state.roomName}
+    const payload={roomName: this.state.roomName, roomNumber:this.state.roomNumber}
     this.sendSocket("create room",payload)
   }
   joinRoom(roomid){
@@ -186,7 +187,7 @@ class App extends React.Component {
       case "start play":
         this.audioStart.current.play()
         this.showMessage("对战开始！")
-        this.setState({currentRoom: data.room})
+        this.setState({currentRoom: data.room, pickedCard:[], dumpableCard: false})
       break;
       case "play":
         if (data.room.inTurn === this.state.playerid){
@@ -200,6 +201,14 @@ class App extends React.Component {
       break;
       case "reasign":
         this.showMessage("上轮结果已修改！")
+        this.setState({currentRoom: data.room, modal:null})
+      break;
+      case "kick":
+        this.showMessage("玩家被踢出房间！")
+        this.setState({currentRoom: data.room, modal:null})
+      break;
+      case "assigndealer":
+        this.showMessage("重置庄家！")
         this.setState({currentRoom: data.room, modal:null})
       break;
       case "rescore":
@@ -374,21 +383,34 @@ class App extends React.Component {
     }
     this.setState({pickedDumpCard})
   }
-  pickCard(idx){
-    
+  pickCardStart(idx){
+    this.setState({startcardPick:true})
     const cardIndex =this.state.pickedCard.indexOf(idx)
     let pickedCard
     if (cardIndex>-1){
       pickedCard = this.state.pickedCard.filter((card,id)=>id!==cardIndex)
-      this.setState({pickedCard},()=>{
-        this.validateCard()
-      })
+      this.setState({pickedCard})
     }else{
       pickedCard = [...this.state.pickedCard, idx]
-      this.setState({pickedCard},()=>{
-        this.validateCard()
-      })
+      this.setState({pickedCard})
     }
+  }
+  pickCardEnter(idx){
+    if(this.state.startcardPick===true){
+      const cardIndex =this.state.pickedCard.indexOf(idx)
+      let pickedCard
+      if (cardIndex>-1){
+        pickedCard = this.state.pickedCard.filter((card,id)=>id!==cardIndex)
+        this.setState({pickedCard})
+      }else{
+        pickedCard = [...this.state.pickedCard, idx]
+        this.setState({pickedCard})
+      }
+    }
+  }
+  pickCardEnd(idx){
+    this.setState({startcardPick:false})
+    this.validateCard()
   }
   buryCard(){
     const picked = this.state.handCard.filter((card,idx)=>this.state.pickedCard.indexOf(idx)>-1)
@@ -447,8 +469,8 @@ class App extends React.Component {
     return (this.state.currentRoom && this.state.playerid===this.state.currentRoom.hostid)
   }
   isStarter(){
-    console.log(!this.state.currentRoom.currentPlay.length)
-    console.log(this.state.currentRoom && (!this.state.currentRoom.currentPlay || !this.state.currentRoom.currentPlay.length || this.state.currentRoom.currentPlay.length===6))
+    // console.log(!this.state.currentRoom.currentPlay.length)
+    // console.log(this.state.currentRoom && (!this.state.currentRoom.currentPlay || !this.state.currentRoom.currentPlay.length || this.state.currentRoom.currentPlay.length===6))
     return this.state.currentRoom && (!this.state.currentRoom.currentPlay || !this.state.currentRoom.currentPlay.length || this.state.currentRoom.currentPlay.length===6)
   }
   isMain(card){
@@ -631,6 +653,18 @@ class App extends React.Component {
     }
     this.sendSocket("reasign",payload)
   }
+  kickPlayer(){
+    const payload = {
+      playerid: this.state.kickPlayerid
+    }
+    this.sendSocket("kick",payload)
+  }
+  assignDealer(){
+    const payload = {
+      playerid: this.state.assignPlayerid
+    }
+    this.sendSocket("assigndealer",payload)
+  }
   rescore(){
     console.log("rescore")
     const payload = {
@@ -639,16 +673,6 @@ class App extends React.Component {
     }
     this.sendSocket("rescore",payload)
   }
-  // validateDump(){
-  //   if (this.state.pickedDumpCard.length > 0){
-  //     const dumpCard = this.state.currentRoom.dumpCard.card
-  //     const picked = dumpCard.filter((card,idx)=>this.state.pickedDumpCard.indexOf(idx)>-1)
-  //     this.sendSocket("invaliddump",{card:picked})
-  //   }else{
-  //     this.sendSocket("validdump")
-  //   }
-  //   this.setState({modal:null, pickedDumpCard:[]})
-  // }
   setAvatar(adjust){
     const avatar = this.state.avatar
     if (avatar === 0 && adjust === -1){
@@ -697,7 +721,6 @@ class App extends React.Component {
         </audio>
         <div className="changedevice"> 请使用更大屏幕设备 </div>
         <div className="connection"><p>&nbsp;</p>
-        {/* <div className={classNames({"on":this.state.connection, "light": true})}></div> */}
         </div>
         {this.state.error && <p className="error" >{this.state.error}</p>}
         {this.state.message && <p className="message" >{this.state.message}</p>}
@@ -720,7 +743,7 @@ class App extends React.Component {
                 value={this.state.displayName} 
                 onChange={(e)=>{this.setState({displayName:e.target.value})}}/>
               </div>
-              <button disabled={!this.state.connection} onClick={(e)=>{e.preventDefault();this.registerPlayer()}}>进入</button>
+              <button onClick={(e)=>{e.preventDefault();this.registerPlayer()}}>进入</button>
             </form>
           </Modal>
         }
@@ -731,6 +754,24 @@ class App extends React.Component {
                   <input type="text" id="roomname" placeholder="房间名"
                   value={this.state.roomName} 
                   onChange={(e)=>{this.setState({roomName:e.target.value})}}/>
+              </div>
+              <div className="formgroup">
+                    <label htmlFor="roomnumber">初始级数</label>
+                    <select value={this.state.roomNumber} id="roomnumber" onChange={(e)=>{this.setState({"roomNumber":e.target.value})}}>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="t">10</option>
+                        <option value="t1">J</option>
+                        <option value="t2">Q</option>
+                        <option value="t3">K</option>
+                        <option value="ta">A</option>
+                    </select>
               </div>
               <div className="actions" >
                 <button onClick={(e)=>{e.preventDefault();this.setState({modal: null});this.createRoom()}}>创建房间</button>
@@ -750,7 +791,7 @@ class App extends React.Component {
             }
           </Modal>
         }
-        {(this.state.modal === "reasign" && this.state.currentRoom.currentPlay.length===6 && this.isHost()) &&
+        {(this.state.modal === "reasign" && this.isHost()) &&
           <Modal onClose={()=>{this.setState({modal:null})}} title="修改上轮赢家">
             <form>
               <select value={this.state.reasignPlayerid} onChange={(e)=>{this.setState({"reasignPlayerid":e.target.value})}}>
@@ -761,6 +802,35 @@ class App extends React.Component {
                 })}
               </select>
               <button onClick={(e)=>{e.preventDefault();this.reasign()}}>提交</button>
+            </form>
+          </Modal>
+        }
+        {(this.state.modal === "kickplayer" && this.isHost()) &&
+          <Modal onClose={()=>{this.setState({modal:null})}} title="踢出玩家">
+            <form>
+              <select value={this.state.kickPlayerid} onChange={(e)=>{this.setState({"kickPlayerid":e.target.value})}}>
+                {this.state.currentRoom.players.map(player=>{
+                  return (
+                    <option value={player.playerid}>{player.displayName}</option>
+                  )
+                })}
+              </select>
+              <button onClick={(e)=>{e.preventDefault();this.kickPlayer()}}>提交</button>
+            </form>
+          </Modal>
+        }
+        {(this.state.modal === "assigndealer" && this.isHost()) &&
+          <Modal onClose={()=>{this.setState({modal:null})}} title="指定庄家">
+            <form>
+              <select value={this.state.assignPlayerid} onChange={(e)=>{this.setState({"assignPlayerid":e.target.value})}}>
+                <option value="race">抢庄</option>
+                {this.state.currentRoom.players.map(player=>{
+                  return (
+                    <option value={player.playerid}>{player.displayName}</option>
+                  )
+                })}
+              </select>
+              <button onClick={(e)=>{e.preventDefault();this.assignDealer()}}>提交</button>
             </form>
           </Modal>
         }
@@ -804,8 +874,11 @@ class App extends React.Component {
           <Modal onClose={()=>{this.setState({modal:null})}} title="设置">
               <div className="settings" >
                 {this.isHost() && <button disabled={this.state.currentRoom.currentPlay.length===0} onClick={(e)=>{e.preventDefault();this.sendSocket("revert"); this.setSscoretate({modal:null})}}>重置本轮</button>}
+                {this.isHost() && <button disabled={this.state.currentRoom.gamestatus==="draw"} onClick={(e)=>{e.preventDefault();this.setState({modal:"kickplayer", kickPlayerid: this.state.currentRoom.players[0].playerid})}}>踢出玩家</button>}
+                {this.isHost() && <button disabled={this.state.currentRoom.gamestatus!=="pending" && this.state.currentRoom.gamestatus!=="draw" && this.state.currentRoom.gamestatus!=="end"} onClick={(e)=>{e.preventDefault();this.setState({modal:"assigndealer", assignPlayerid: this.state.currentRoom.players[0].playerid})}}>指认庄家</button>}
                 {this.isHost() && <button disabled={this.state.currentRoom.currentPlay.length!==6} onClick={(e)=>{e.preventDefault();this.setState({modal:"reasign", reasignPlayerid: this.state.currentRoom.inTurn})}}>修改上轮赢家</button>}
                 {this.isHost() && <button onClick={(e)=>{e.preventDefault();this.setState({modal:"rescore", rescorePlayerid: this.state.currentRoom.players[0].playerid, rescoreScore: this.state.currentRoom.players[0].score})}}>修改玩家级数</button>}
+                {this.isHost() && <button onClick={(e)=>{e.preventDefault();this.startGame()}}>重新发牌</button>}
                 <button onClick={(e)=>{e.preventDefault();this.leaveRoom()}}>返回大厅</button>
               </div>
           </Modal>
@@ -832,7 +905,7 @@ class App extends React.Component {
           </Modal>
         }
         {(this.state.modal === "end" && this.state.currentRoom) && 
-          <Modal onClose={()=>{this.setState({modal:null})}} title="游戏结束">
+          <Modal title="游戏结束">
             <div className="summary">
               <h3>底牌：</h3>
               <div className="cardlist">
@@ -893,12 +966,13 @@ class App extends React.Component {
               <div className="setting" onClick={()=>{this.setState({modal:"setting"})}}>
                 <FontAwesomeIcon icon={faCog} />
               </div>
+              <a href="https://www.patreon.com/user?u=45631615&fan_landing=true" target="_blank" className="buymecoffee">
+                <FontAwesomeIcon icon={faCoffee} /><div className="coffeetext">Buy me Coffee</div>
+              </a>
             </div>
             <div className="start">
               {(this.isHost() && this.state.currentRoom.status ==="full" ) && <button onClick={(e)=>{e.preventDefault();this.startGame()}}>开始游戏</button>}
             </div>
-
-
               <Players
                 playerid={this.state.playerid}
                 players={this.state.currentRoom.players}
@@ -933,7 +1007,7 @@ class App extends React.Component {
                   <div className="cardlist">
                     {(this.state.currentRoom.currentPlay && this.state.currentRoom.currentPlay.length>0 && this.state.currentRoom.currentPlay.filter(play=>play.playerid===this.state.playerid).length>0) && this.state.currentRoom.currentPlay.filter(play=>play.playerid===this.state.playerid)[0].card.map(card=>{
                       return <Poker small card ={card}/>
-                    })
+                      })
                     }
                     {(this.state.currentRoom.mainCalls && this.state.currentRoom.mainCalls.length>0 && this.state.currentRoom.mainCalls.filter(play=>play.playerid===this.state.playerid).length>0) && 
                       this.state.currentRoom.mainCalls.filter(play=>play.playerid===this.state.playerid)[0].card.map(card=>{
@@ -945,7 +1019,7 @@ class App extends React.Component {
                 <div className="actionpanel">
                   
                   <div className="play">                    
-                    {(this.state.pickedCard.length>0) && <button onClick={(e)=>{e.preventDefault();this.setState({pickedCard:[]})}}>取消</button>}
+                    {(this.state.pickedCard.length>0) && <button onClick={(e)=>{e.preventDefault();this.setState({pickedCard:[],validCard:false, dumpableCard:false})}}>取消</button>}
                     {(this.state.currentRoom.gamestatus==="bury" && this.state.currentRoom.dealerid === this.state.playerid) && <button onClick={(e)=>{e.preventDefault();this.buryCard()}}>埋牌</button>}
                     {(this.state.currentRoom.gamestatus==="in play" && this.state.currentRoom.inTurn === this.state.playerid) && 
                       <button disabled = {!this.state.validCard && !this.state.dumpableCard} onClick={(e)=>{e.preventDefault();this.playCard()}}>{(this.state.dumpableCard && !this.state.validCard) ? "甩" : "出"}牌</button>
@@ -965,14 +1039,16 @@ class App extends React.Component {
                 </div>
               </div>
               <div className="handcard">
-                <div className="cardlist">
+                <div className="cardlist" onMouseLeave={()=>{this.setState({startcardPick:false})}}>
                   { this.state.handCard && this.state.handCard.map((card, idx)=>{
                     return (<Poker 
                       card={card} 
                       key={idx} 
                       sequence={idx} 
                       picked={this.state.pickedCard.indexOf(idx)>-1} 
-                      onPick={()=>{this.pickCard(idx)}}
+                      onPickStart={()=>{this.pickCardStart(idx)}}
+                      onPickEnd={()=>{this.pickCardEnd(idx)}}
+                      onPickEnter={()=>{this.pickCardEnter(idx)}}
                       main ={this.isMain(card)?true:false}
                       forbidden ={this.isForbidden(card)}
                     />

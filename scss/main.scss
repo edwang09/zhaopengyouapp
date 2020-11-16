@@ -358,6 +358,29 @@ $light-blue : #8447FF;
                 cursor: pointer;
             }
         }
+        .buymecoffee{
+            font-size: 140%;
+            margin:0 5px;
+            color: #999;
+            font-size: 140%;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            text-decoration: none;
+            &:hover{
+                color: $eton;
+                transform: scale(1.1);
+                cursor: pointer;
+            }
+            div.coffeetext{
+                display: block;
+                font-size: 15px;
+                width: 50px;
+                text-align: center;
+                overflow: wrap;
+            }
+        }
     }
     .start{
         position: fixed;
@@ -652,6 +675,12 @@ $light-blue : #8447FF;
         background-color: #fff;
         transition: all .3s;
         position: relative;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
         .pokersuit{
             width: 25px;
             height: 25px;
@@ -747,6 +776,9 @@ $light-blue : #8447FF;
                 color: $dark-blue
             }
         }
+    }
+    .formgroup{
+        margin-top: 10px;
     }
 }
 
